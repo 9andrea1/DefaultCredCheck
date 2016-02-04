@@ -89,7 +89,7 @@ if options.f_in is not None and options.target is not None:
 	print "\n"
         sys.exit()
 if options.f_in is not None:
-	print "[*] Reading file "+options.f_in
+	print colored("[*] ","blue")+"Reading file "+options.f_in
 	list = f_read(options.f_in)
 if options.target is not None:
 	if not ValidTarget():
