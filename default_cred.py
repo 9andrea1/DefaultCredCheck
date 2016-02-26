@@ -32,7 +32,10 @@ table.insert(fingerprints, {
     return http_auth_realm(response) == "JMXConsole"
   end,
   login_combos = {
-    {username = "admin", password = "admin"}
+    {username = "admin", password = "admin"},
+    {username = "admin", password = "jboss"},
+    {username = "jboss", password = "admin"},
+    {username = "jboss", password = "jboss"},
   },
   login_check = function (host, port, path, user, pass)
     return try_http_basic_login(host, port, path, user, pass, false)
