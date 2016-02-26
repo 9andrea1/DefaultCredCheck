@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
 '''
-update TomcatManager creds in /usr/share/nmap/nselib/data/http-default-accounts-fingerprints.lua
+edit /usr/share/nmap/nselib/data/http-default-accounts-fingerprints.lua
+
+update TomcatManager creds:
 
 {username = "tomcat", password = "tomcat"},
 {username = "tomcat", password = "manager"},
@@ -15,6 +17,44 @@ update TomcatManager creds in /usr/share/nmap/nselib/data/http-default-accounts-
 {username = "manager", password = "tomcat"},
 {username = "manager", password = "password"},
 {username = "manager", password = "admin"},
+
+
+add also Jboss checks:
+
+
+table.insert(fingerprints, {
+  name = "Jboss",
+  category = "web",
+  paths = {
+    {path = "/jmx-console/"}
+  },
+  target_check = function (host, port, path, response)
+    return http_auth_realm(response) == "JMXConsole"
+  end,
+  login_combos = {
+    {username = "admin", password = "admin"}
+  },
+  login_check = function (host, port, path, user, pass)
+    return try_http_basic_login(host, port, path, user, pass, false)
+  end
+})
+
+table.insert(fingerprints, {
+  name = "Jboss unauthenticated",
+  category = "web",
+  paths = {
+    {path = "/jmx-console/"}
+  },
+  target_check = function (host, port, path, response)
+    return response.status == 200
+  end,
+  login_combos = {
+    {username = "", password = ""}
+  },
+  login_check = function (host, port, path, user, pass)
+    return http.get(host, port, path).status == 200
+  end
+})
 
 '''
 
