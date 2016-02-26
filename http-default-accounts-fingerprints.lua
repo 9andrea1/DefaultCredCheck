@@ -197,12 +197,13 @@ table.insert(fingerprints, {
 })
 
 table.insert(fingerprints, {
-  name = "Jboss unauthenticated",
+  name = "Jboss",
   category = "web",
   paths = {
     {path = "/jmx-console/"}
   },
   target_check = function (host, port, path, response)
+    -- no auth required
     return response.status == 200
   end,
   login_combos = {
