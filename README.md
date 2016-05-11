@@ -1,6 +1,9 @@
 # DefaultCredCheck
 nmap http default credentials check
 
+# Installation
+replace /usr/share/nmap/nselib/data/http-default-accounts-fingerprints.lua with provided script
+
 ## Example
 ```shell
 root@kali:~/Desktop# ./default_cred.py -t 192.168.2.0/24
