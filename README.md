@@ -1,7 +1,7 @@
 # DefaultCredCheck
 nmap http default credentials check
 
-# Installation
+## Installation
 replace /usr/share/nmap/nselib/data/http-default-accounts-fingerprints.lua with provided script
 
 ## Example
