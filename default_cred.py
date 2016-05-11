@@ -1,66 +1,5 @@
 #!/usr/bin/env python
 
-'''
-edit /usr/share/nmap/nselib/data/http-default-accounts-fingerprints.lua
-
-update TomcatManager creds:
-
-{username = "tomcat", password = "tomcat"},
-{username = "tomcat", password = "manager"},
-{username = "tomcat", password = "password"},
-{username = "tomcat", password = "admin"},
-{username = "admin", password = "admin"},
-{username = "admin", password = "tomcat"},
-{username = "admin", password = "password"},
-{username = "admin", password = "manager"},
-{username = "manager", password = "manager"},
-{username = "manager", password = "tomcat"},
-{username = "manager", password = "password"},
-{username = "manager", password = "admin"},
-
-
-add also Jboss checks:
-
-
-table.insert(fingerprints, {
-  name = "Jboss",
-  category = "web",
-  paths = {
-    {path = "/jmx-console/"}
-  },
-  target_check = function (host, port, path, response)
-    return http_auth_realm(response) == "JMXConsole"
-  end,
-  login_combos = {
-    {username = "admin", password = "admin"},
-    {username = "admin", password = "jboss"},
-    {username = "jboss", password = "admin"},
-    {username = "jboss", password = "jboss"},
-  },
-  login_check = function (host, port, path, user, pass)
-    return try_http_basic_login(host, port, path, user, pass, false)
-  end
-})
-
-table.insert(fingerprints, {
-  name = "Jboss unauthenticated",
-  category = "web",
-  paths = {
-    {path = "/jmx-console/"}
-  },
-  target_check = function (host, port, path, response)
-    return response.status == 200
-  end,
-  login_combos = {
-    {username = "", password = ""}
-  },
-  login_check = function (host, port, path, user, pass)
-    return http.get(host, port, path).status == 200
-  end
-})
-
-'''
-
 import re, sys, commands
 from termcolor import colored
 from optparse import *
@@ -138,11 +77,11 @@ if options.target is not None:
 	if not ValidTarget():
 		sys.exit()
 	if options.port is not None:
-		print colored("[*] ","blue")+"CMD: nmap --open -n --script http-default-accounts.nse -T4 -p %s %s"%(options.port,options.target)
-		output = commands.getoutput("nmap --open -n --script http-default-accounts.nse -T4 -p %s %s"%(options.port,options.target))
+		print colored("[*] ","blue")+"CMD: nmap --open -n --script http-default-accounts.nse -sV -T4 -p %s %s"%(options.port,options.target)
+		output = commands.getoutput("nmap --open -n --script http-default-accounts.nse -sV -T4 -p %s %s"%(options.port,options.target))
 	else:
-		print colored("[*] ","blue")+"CMD: nmap --open -n --script http-default-accounts.nse -T4 %s"%options.target
-		output = commands.getoutput("nmap --open -n --script http-default-accounts.nse -T4 %s"%options.target)
+		print colored("[*] ","blue")+"CMD: nmap --open -n --script http-default-accounts.nse -sV -T4 %s"%options.target
+		output = commands.getoutput("nmap --open -n --script http-default-accounts.nse -sV -T4 %s"%options.target)
 	list = output.split("\n\n")
 if options.f_out is not None:
 	print colored("[*] ","blue")+"Log file is '%s'"%options.f_out
@@ -150,4 +89,3 @@ if options.f_out is not None:
 
 work(list)
 sys.exit()
-	
